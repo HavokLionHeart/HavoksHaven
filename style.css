@@ -1,17 +1,15 @@
 body {
-  font-family: "Segoe UI", sans-serif;
-  background: #e2e2e2;
-  color: #222;
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+  background: #1e1e1e;
+  color: white;
   text-align: center;
-  padding: 20px;
-}
-
-#game-ui {
-  margin-bottom: 20px;
 }
 
 canvas {
-  background: #333;
-  border: 3px solid #111;
+  background: #2e2e2e;
+  display: block;
+  margin: auto;
+  border: 2px solid #555;
 }
-

@@ -1,70 +1,41 @@
-const goldEl = document.getElementById("gold");
-const timerEl = document.getElementById("wave-timer");
-const upgradeBtn = document.getElementById("upgrade-building");
-const watchAdBtn = document.getElementById("watch-ad");
+import Hero from './classes/Hero.js';
+import Resource from './classes/Resource.js';
+import { getRandomResource } from './data/resourceDrops.js';
+
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 
-// Game State
-let gold = 0;
-let waveTimer = 24;
-let buildingUnlocked = false;
-let enemies = [];
+const hero = new Hero(160, 580);
+const resources = [];
 
-function updateUI() {
-  goldEl.textContent = gold;
-  timerEl.textContent = waveTimer;
-
-  if (!buildingUnlocked && gold >= 50) {
-    upgradeBtn.disabled = false;
-  } else {
-    upgradeBtn.disabled = true;
-  }
+// Spawn a few random resource sprites
+for (let i = 0; i < 5; i++) {
+  const r = getRandomResource();
+  resources.push(r);
 }
 
-// Simple game loop every 1s
-setInterval(() => {
-  
-  // Wave countdown
-  waveTimer -= 1;
-  if (waveTimer <= 0) {
-    spawnEnemyWave();
-    waveTimer = 24;
-  }
-
-  updateUI();
-}, 1000);
-
-upgradeBtn.addEventListener("click", () => {
-  if (gold >= 50 && !buildingUnlocked) {
-    gold -= 50;
-    buildingUnlocked = true;
-    upgradeBtn.textContent = "Mad Cow Inn Unlocked! 🐄";
-    upgradeBtn.disabled = true;
-  }
+// Handle clicks for movement
+canvas.addEventListener("click", (e) => {
+  const rect = canvas.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
+  hero.setTarget(x, y);
 });
 
-watchAdBtn.addEventListener("click", () => {
-  alert("Simulating ad... 💰");
-  gold *= 2;
-  updateUI();
-});
-
-// Enemy placeholder rendering
-function spawnEnemyWave() {
-  enemies.push({ x: 800, y: 200, hp: 10 });
-}
-
-function draw() {
+// Game loop
+function loop() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  // Draw each enemy
-  enemies.forEach(enemy => {
-    enemy.x -= 2;
-    ctx.fillStyle = "red";
-    ctx.fillRect(enemy.x, enemy.y, 30, 30);
+  // Draw and update resources
+  resources.forEach((r) => {
+    r.update(hero);
+    r.draw(ctx);
   });
 
-  requestAnimationFrame(draw);
+  // Move and draw hero
+  hero.update();
+  hero.draw(ctx);
+
+  requestAnimationFrame(loop);
 }
-draw();
+loop();
