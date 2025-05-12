@@ -26,7 +26,7 @@ export function getRandomResource() {
     const size = 15 + Math.random() * 20;
     const hp = choice.baseHp + Math.random() * 40;
   
-    return new (require('../classes/Resource.js').default)(
+    return new Resource(
       Math.random() * 300 + 20,
       Math.random() * 400 + 20,
       size,
