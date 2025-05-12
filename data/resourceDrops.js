@@ -1,19 +1,21 @@
+import Resource from '../classes/Resource.js';
+
 export function getRandomResource() {
     const types = [
       {
-        type: "::Plant Cord::",
+        type: "Plant",
         color: "#4CAF50",
         baseHp: 30,
-        rewards: { "Plant Cord": 3 }
+        rewards: { "Plant": 3 }
       },
       {
-        type: "::Timber::",
+        type: "Timber",
         color: "#8B4513",
         baseHp: 50,
         rewards: { "Timber": 2 }
       },
       {
-        type: "::Stone::",
+        type: "Stone",
         color: "#999",
         baseHp: 60,
         rewards: { "Stone": 1 }
