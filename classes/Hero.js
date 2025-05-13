@@ -8,6 +8,9 @@ export default class Hero {
       this.strength = 5;
       this.harvestingSkill = 3;
       this.toolPower = 2;
+      this.stamina = 100;
+      this.staminaMax = 100;
+
     }
   
     setTarget(x, y) {
@@ -34,5 +37,13 @@ export default class Hero {
       ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
       ctx.fill();
     }
+    reduceStamina(amount) {
+      this.stamina = Math.max(0, this.stamina - amount);
+    }
+    
+    recoverStamina(amount) {
+      this.stamina = Math.min(this.staminaMax, this.stamina + amount);
+    }
+    
   }
   

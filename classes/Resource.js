@@ -18,6 +18,22 @@ export default class Resource {
   
       if (dist < this.size + hero.size) {
         this.harvesting = true;
+      
+        if (hero.stamina > 0 && this.hp > 0) {
+          const dmg = hero.getHarvestPower() * 0.1;
+          this.hp -= dmg;
+          hero.reduceStamina(0.5);
+        }
+      
+        if (this.hp <= 0) {
+          this.die();
+          if (this.rewards["Gold"]) {
+            hero.gold += this.rewards["Gold"];
+          }
+        }
+      
+      
+        
         const dmg = hero.getHarvestPower() * 0.1;
         this.hp -= dmg;
         if (this.hp <= 0) {
@@ -29,7 +45,8 @@ export default class Resource {
     }
   
     die() {
-      console.log(`+ ${this.type} rewards:`, this.rewards);
+      document.getElementById("harvest-log").textContent = 
+  `Harvested ${Object.keys(this.rewards).join(', ')}`;
       this.hp = 0;
       this.size = 0;
       this.rewards = {};

@@ -2,6 +2,10 @@ import Hero from './classes/Hero.js';
 import Resource from './classes/Resource.js';
 import { getRandomResource } from './data/resourceDrops.js';
 
+const goldUI = document.getElementById("gold");
+const staminaUI = document.getElementById("stamina");
+const adButton = document.getElementById("ad-button");
+
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 
@@ -25,7 +29,9 @@ canvas.addEventListener("click", (e) => {
 // Game loop
 function loop() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-
+  goldUI.textContent = Math.floor(hero.gold ?? 0);
+  staminaUI.textContent = Math.floor(hero.stamina);
+  
   // Draw and update resources
   resources.forEach((r) => {
     r.update(hero);
@@ -38,4 +44,9 @@ function loop() {
 
   requestAnimationFrame(loop);
 }
+adButton.addEventListener("click", () => {
+  alert("Simulating ad reward... 💰");
+  hero.gold *= 2;
+});
+
 loop();
