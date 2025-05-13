@@ -50,6 +50,10 @@ export default class Resource {
       this.hp = 0;
       this.size = 0;
       this.rewards = {};
+      for (const [key, val] of Object.entries(this.rewards)) {
+        hero.inventory.add(key, val);
+      }
+      
     }
   
     draw(ctx) {

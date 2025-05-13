@@ -1,3 +1,4 @@
+import Inventory from './Inventory.js';
 export default class Hero {
     constructor(x, y) {
       this.x = x;
@@ -10,8 +11,16 @@ export default class Hero {
       this.toolPower = 2;
       this.stamina = 100;
       this.staminaMax = 100;
+      this.inventory = new Inventory();
+      this.gold = 0;
 
     }
+
+    regenerateStamina(multiplier = 1) {
+      const regen = 0.02 * multiplier;
+      this.stamina = Math.min(this.staminaMax, this.stamina + regen);
+    }
+    
   
     setTarget(x, y) {
       this.target = { x, y };
