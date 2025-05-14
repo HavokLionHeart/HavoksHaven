@@ -37,7 +37,7 @@ class FloatingText {
 }
 
 
-const inn = new MadCowInn(300, 750);
+const inn = new MadCowInn(300, 500);
 const adButton = document.getElementById("ad-button");
 
 const canvas = document.getElementById("gameCanvas");
