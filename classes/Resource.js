@@ -53,6 +53,10 @@ export default class Resource {
       for (const [key, val] of Object.entries(this.rewards)) {
         hero.inventory.add(key, val);
       }
+      for (const [key, val] of Object.entries(this.rewards)) {
+        hero.inventory.add(key, val);
+        floatingTexts.push(new FloatingText(this.x, this.y, `${key} +${val}`));
+      }
       
     }
   
