@@ -145,7 +145,6 @@ for (const [key, val] of Object.entries(items)) {
 
   // Check Inn proximity
 const insideInn = inn.isHeroInside(hero);
-innStatus.textContent = insideInn ? "Inn bonus active: 🐄" : "";
 
 hero.regenerateStamina(insideInn ? 10 : 1);
 
