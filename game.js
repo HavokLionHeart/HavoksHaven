@@ -38,11 +38,7 @@ class FloatingText {
 
 
 const inn = new MadCowInn(300, 750);
-const goldUI = document.getElementById("gold");
-const staminaUI = document.getElementById("stamina");
 const adButton = document.getElementById("ad-button");
-const invList = document.getElementById("inventory-list");
-const innStatus = document.getElementById("inn-status");
 
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
@@ -107,7 +103,7 @@ function loop() {
     if (floatingTexts[i].isDead()) floatingTexts.splice(i, 1);
   }
   
-
+    // HUD setup
   ctx.fillStyle = "rgba(0,0,0,0.6)";
   ctx.fillRect(0, 0, canvas.width, 40);
   ctx.fillStyle = "#fff";
