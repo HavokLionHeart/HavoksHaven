@@ -37,7 +37,7 @@ class FloatingText {
 }
 
 
-const inn = new MadCowInn(160, 580);
+const inn = new MadCowInn(300, 750);
 const goldUI = document.getElementById("gold");
 const staminaUI = document.getElementById("stamina");
 const adButton = document.getElementById("ad-button");
@@ -46,6 +46,37 @@ const innStatus = document.getElementById("inn-status");
 
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
+
+const inventoryIcon = {
+  x: canvas.width - 50,
+  y: canvas.height - 50,
+  size: 40
+};
+
+let inventoryPanelOpen = false;
+let inventoryPanelY = canvas.height;
+let inventoryTargetY = canvas.height;
+
+canvas.addEventListener("click", (e) => {
+  const rect = canvas.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
+
+  // Check backpack button click
+  if (
+    x >= inventoryIcon.x &&
+    x <= inventoryIcon.x + inventoryIcon.size &&
+    y >= inventoryIcon.y &&
+    y <= inventoryIcon.y + inventoryIcon.size
+  ) {
+    inventoryPanelOpen = !inventoryPanelOpen;
+    inventoryTargetY = inventoryPanelOpen ? canvas.height - 150 : canvas.height;
+  }
+
+  // Hero movement
+  hero.setTarget(x, y);
+});
+
 
 const hero = new Hero(160, 580);
 const resources = [];
@@ -84,20 +115,39 @@ function loop() {
   ctx.fillText(`Gold: ${Math.floor(hero.inventory.get("Gold"))}`, 10, 20);
   ctx.fillText(`Stamina: ${Math.floor(hero.stamina)}`, 150, 20);
 
+    // Backpack button
+  ctx.fillStyle = "#222";
+  ctx.fillRect(inventoryIcon.x, inventoryIcon.y, inventoryIcon.size, inventoryIcon.size);
+  ctx.fillStyle = "#fff";
+  ctx.font = "12px sans-serif";
+  ctx.fillText("🎒", inventoryIcon.x + 10, inventoryIcon.y + 25);
+
+  // Animate panel
+inventoryPanelY += (inventoryTargetY - inventoryPanelY) * 0.2;
+
+// Inventory slide panel
+ctx.fillStyle = "#000";
+ctx.fillRect(0, inventoryPanelY, canvas.width, 150);
+ctx.strokeStyle = "#555";
+ctx.strokeRect(0, inventoryPanelY, canvas.width, 150);
+
+// Draw inventory text
+ctx.fillStyle = "#fff";
+ctx.font = "12px sans-serif";
+const items = hero.inventory.getAll();
+const cap = hero.inventory.getCap();
+
+let i = 0;
+for (const [key, val] of Object.entries(items)) {
+  ctx.fillText(`${key}: ${val} / ${cap}`, 10, inventoryPanelY + 20 + i * 20);
+  i++;
+}
 
   // Check Inn proximity
 const insideInn = inn.isHeroInside(hero);
 innStatus.textContent = insideInn ? "Inn bonus active: 🐄" : "";
 
 hero.regenerateStamina(insideInn ? 10 : 1);
-
-// Update inventory UI
-invList.innerHTML = '';
-const items = hero.inventory.getAll();
-const cap = hero.inventory.getCap();
-for (const [key, val] of Object.entries(items)) {
-  invList.innerHTML += `<li>${key}: ${val} / ${cap}</li>`;
-}
 
   
   // Draw and update resources
