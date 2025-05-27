@@ -11,7 +11,7 @@ export default class Resource {
       this.harvesting = false;
     }
   
-    update(hero) {
+    update(hero, floatingTexts) {
       const dx = this.x - hero.x;
       const dy = this.y - hero.y;
       const dist = Math.hypot(dx, dy);
@@ -44,7 +44,7 @@ export default class Resource {
       }
     }
   
-    die(hero) {
+    die(hero, floatingTexts) {
       for (const [key, val] of Object.entries(this.rewards)) {
         hero.inventory.add(key, val);
         floatingTexts.push(new FloatingText(this.x, this.y, `${key} +${val}`));
