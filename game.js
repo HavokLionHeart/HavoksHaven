@@ -58,20 +58,24 @@ canvas.addEventListener("click", (e) => {
   const x = e.clientX - rect.left;
   const y = e.clientY - rect.top;
 
-  // Check backpack button click
-  if (
+  // Dynamic icon position (follows panel)
+  const backpackY = inventoryIcon.y - (inventoryPanelOpen ? 160 : 0);
+
+  const clickedBackpack = (
     x >= inventoryIcon.x &&
     x <= inventoryIcon.x + inventoryIcon.size &&
-    y >= inventoryIcon.y &&
-    y <= inventoryIcon.y + inventoryIcon.size
-  ) {
+    y >= backpackY &&
+    y <= backpackY + inventoryIcon.size
+  );
+
+  if (clickedBackpack) {
     inventoryPanelOpen = !inventoryPanelOpen;
     inventoryTargetY = inventoryPanelOpen ? canvas.height - 150 : canvas.height;
+  } else {
+    hero.setTarget(x, y);
   }
-
-  // Hero movement
-  hero.setTarget(x, y);
 });
+
 
 
 const hero = new Hero(160, 580);
@@ -82,14 +86,6 @@ for (let i = 0; i < 5; i++) {
   const r = getRandomResource();
   resources.push(r);
 }
-
-// Handle clicks for movement
-canvas.addEventListener("click", (e) => {
-  const rect = canvas.getBoundingClientRect();
-  const x = e.clientX - rect.left;
-  const y = e.clientY - rect.top;
-  hero.setTarget(x, y);
-});
 
 // Game loop
 function loop() {
@@ -111,33 +107,30 @@ function loop() {
   ctx.fillText(`Gold: ${Math.floor(hero.inventory.get("Gold"))}`, 10, 20);
   ctx.fillText(`Stamina: ${Math.floor(hero.stamina)}`, 150, 20);
 
-    // Backpack button
-  ctx.fillStyle = "#222";
-  ctx.fillRect(inventoryIcon.x, inventoryIcon.y, inventoryIcon.size, inventoryIcon.size);
-  ctx.fillStyle = "#fff";
-  ctx.font = "12px sans-serif";
-  ctx.fillText("🎒", inventoryIcon.x + 10, inventoryIcon.y + 25);
-
-  // Animate panel
+ // Inventory panel (draw this first)
 inventoryPanelY += (inventoryTargetY - inventoryPanelY) * 0.2;
-
-// Inventory slide panel
 ctx.fillStyle = "#000";
 ctx.fillRect(0, inventoryPanelY, canvas.width, 150);
 ctx.strokeStyle = "#555";
 ctx.strokeRect(0, inventoryPanelY, canvas.width, 150);
 
-// Draw inventory text
 ctx.fillStyle = "#fff";
 ctx.font = "12px sans-serif";
-const items = hero.inventory.getAll();
-const cap = hero.inventory.getCap();
-
 let i = 0;
-for (const [key, val] of Object.entries(items)) {
-  ctx.fillText(`${key}: ${val} / ${cap}`, 10, inventoryPanelY + 20 + i * 20);
+for (const [key, val] of Object.entries(hero.inventory.getAll())) {
+  ctx.fillText(`${key}: ${val} / ${hero.inventory.getCap()}`, 10, inventoryPanelY + 20 + i * 20);
   i++;
 }
+
+// THEN draw backpack button over it
+const backpackY = inventoryIcon.y - (inventoryPanelOpen ? 160 : 0);
+ctx.fillStyle = "#222";
+ctx.fillRect(inventoryIcon.x, backpackY, inventoryIcon.size, inventoryIcon.size);
+ctx.fillStyle = "#fff";
+ctx.font = "12px sans-serif";
+ctx.fillText("🎒", inventoryIcon.x + 10, backpackY + 25);
+
+
 
   // Check Inn proximity
 const insideInn = inn.isHeroInside(hero);
