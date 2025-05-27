@@ -38,7 +38,7 @@ class FloatingText {
 
 
 const inn = new MadCowInn(300, 500);
-const adButton = document.getElementById("ad-button");
+
 
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
@@ -152,9 +152,6 @@ hero.regenerateStamina(insideInn ? 10 : 1);
 
   requestAnimationFrame(loop);
 }
-adButton.addEventListener("click", () => {
-  alert("Simulating ad reward... 💰");
-  hero.gold *= 2;
-});
+
 
 loop();
