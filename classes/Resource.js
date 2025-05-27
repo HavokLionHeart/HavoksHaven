@@ -26,7 +26,7 @@ export default class Resource {
         }
       
         if (this.hp <= 0) {
-          this.die();
+          this.die(hero);
           if (this.rewards["Gold"]) {
             hero.gold += this.rewards["Gold"];
           }
@@ -44,7 +44,7 @@ export default class Resource {
       }
     }
   
-    die() {
+    die(hero) {
       for (const [key, val] of Object.entries(this.rewards)) {
         hero.inventory.add(key, val);
         floatingTexts.push(new FloatingText(this.x, this.y, `${key} +${val}`));
