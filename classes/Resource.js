@@ -1,3 +1,5 @@
+import FloatingText from './FloatingText.js';
+
 class FloatingText {
   constructor(x, y, text, color = "#FFF") {
     this.x = x;
