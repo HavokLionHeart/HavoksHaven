@@ -56,10 +56,7 @@ export default class Resource {
           if (this.rewards["Gold"]) {
             hero.gold += this.rewards["Gold"];
           }
-        }
-      
-      
-        
+        }        
         const dmg = hero.getHarvestPower() * 0.1;
         this.hp -= dmg;
         if (this.hp <= 0) {

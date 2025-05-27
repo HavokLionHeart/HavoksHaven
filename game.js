@@ -39,7 +39,6 @@ class FloatingText {
 
 const inn = new MadCowInn(300, 500);
 
-
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 
@@ -140,7 +139,7 @@ hero.regenerateStamina(insideInn ? 10 : 1);
   
   // Draw and update resources
   resources.forEach((r) => {
-    r.update(hero);
+    r.update(hero, floatingTexts);
     r.draw(ctx);
   });
 
